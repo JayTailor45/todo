@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Add new todo</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Task</mat-label>
+      <input type="text" matInput
+        [formControl]="todoFormControl"
+        placeholder="Enter your task here">
+      <mat-error *ngIf="todoFormControl.hasError('required')">
+        Task title is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="null">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="todoFormControl.value" [disabled]="todoFormControl.invalid">Add</button>
+</mat-dialog-actions>

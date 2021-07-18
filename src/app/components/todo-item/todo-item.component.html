@@ -1,0 +1,11 @@
+<mat-card [ngClass]="{'isDone': todo.done}">
+  <div fxLayout="row" fxLayoutAlign="none center">
+    <mat-checkbox (change)=checkboxChange() style="margin-right: 15px;"></mat-checkbox>
+    <div fxFlex="auto">
+      <p>{{todo?.text}}</p>
+    </div>
+    <button mat-icon-button color="warn" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>
