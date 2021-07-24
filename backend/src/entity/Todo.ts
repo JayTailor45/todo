@@ -6,12 +6,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  BaseEntity,
 } from 'typeorm';
 
 import { v4 as uuid } from 'uuid';
 
 @Entity({ name: 'todos' })
-export class Todo {
+export class Todo extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
