@@ -1,4 +1,5 @@
-FROM node:14.17.0-alpine
+### STAGE 1: Build ###
+FROM node:14.17.0-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -9,6 +10,11 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 4200
+RUN npm run build
 
-CMD /usr/src/app/node_modules/.bin/ng serve --host 0.0.0.0 --disableHostCheck
+### STAGE 2: Run ###
+FROM nginx:1.21.3-alpine
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/src/app/dist/todo /usr/share/nginx/html
+
+EXPOSE 80
