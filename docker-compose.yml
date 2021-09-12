@@ -18,12 +18,12 @@ services:
       MYSQL_USER: db-usr
       MYSQL_PASSWORD: Password1
       MYSQL_ROOT_HOST: '%'
-  # frontend:
-  #   build: ./
-  #   ports:
-  #     - 4200:80
-  #   links:
-  #     - backend
+  frontend:
+    build: ./
+    ports:
+      - 4200:80
+    links:
+      - backend
   backend:
     depends_on:
       - db

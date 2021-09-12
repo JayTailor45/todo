@@ -1,5 +1,0 @@
-FROM mysql
-
-ENV MYSQL_DATABASE todo
-ENV MYSQL_ROOT_PASSWORS=Password1
-
