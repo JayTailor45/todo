@@ -8,10 +8,16 @@ services:
     volumes:
       - data:/var/lib/mysql
     ports:
-      - 3306:3333
+      - "3306:3306"
+    networks:
+      - todo-app
     environment:
-      - MYSQL_ROOT_PASSWORD=Password1
-      - MYSQL_DATABASE=todo
+      MYSQL_DATABASE: todo
+      MYSQL_ALLOW_EMPTY_PASSWORD: ok
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: db-usr
+      MYSQL_PASSWORD: Password1
+      MYSQL_ROOT_HOST: '%'
   # frontend:
   #   build: ./
   #   ports:
@@ -19,10 +25,16 @@ services:
   #   links:
   #     - backend
   backend:
-    build: ./backend/
-    ports:
-      - 5000:5000
-    links:
+    depends_on:
       - db
+    build: ./backend/
+    command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm start'
+    ports:
+      - "5000:5000"
+    networks:
+      - todo-app
 volumes:
   data:
+networks:
+  todo-app:
+    driver: bridge

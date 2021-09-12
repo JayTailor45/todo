@@ -6,6 +6,7 @@ COPY package.json .
 COPY package-lock.json .
 
 RUN npm install
+RUN apk update && apk add bash
 
 COPY . .
 
@@ -15,4 +16,4 @@ EXPOSE 5000
 
 WORKDIR /usr/src/backend/build/
 
-CMD ["node", "index.js"]
+CMD ["index.js"]
