@@ -11,8 +11,8 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 5000
 
-RUN cd ./build/
+WORKDIR /usr/src/backend/build/
 
 CMD ["node", "index.js"]
