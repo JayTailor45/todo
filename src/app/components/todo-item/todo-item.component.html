@@ -1,8 +1,8 @@
 <mat-card [ngClass]="{'isDone': todo.done}">
   <div fxLayout="row" fxLayoutAlign="none center">
-    <mat-checkbox (change)=checkboxChange() style="margin-right: 15px;"></mat-checkbox>
+    <mat-checkbox [checked]="todo.done" (change)=checkboxChange() style="margin-right: 15px;"></mat-checkbox>
     <div fxFlex="auto">
-      <p>{{todo?.text}}</p>
+      <p>{{todo?.todo}}</p>
     </div>
     <button mat-icon-button color="warn" (click)="onDelete()">
       <mat-icon>delete</mat-icon>

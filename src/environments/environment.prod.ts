@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  todoBackend: 'http://localhost:5000/',
 };

@@ -22,7 +22,7 @@ export class TodoItemComponent implements OnInit {
   }
 
   onDelete() {
-    this.itemDeleteEvent.emit(this.todo.id);
+    this.itemDeleteEvent.emit(this.todo.uuid);
   }
 
 }

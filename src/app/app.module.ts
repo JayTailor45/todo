@@ -13,15 +13,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AddTodoPopupComponent } from './components/add-todo-popup/add-todo-popup.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfirmDeletePopupComponent } from './components/confirm-delete-popup/confirm-delete-popup.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TodoItemComponent,
-    AddTodoPopupComponent
-  ],
+  declarations: [AppComponent, TodoItemComponent, AddTodoPopupComponent, ConfirmDeletePopupComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -36,8 +35,10 @@ import { AddTodoPopupComponent } from './components/add-todo-popup/add-todo-popu
     ReactiveFormsModule,
     MatCardModule,
     MatCheckboxModule,
+    HttpClientModule,
+    MatSnackBarModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

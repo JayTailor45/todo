@@ -3,8 +3,10 @@ import { Todo } from './entity/Todo';
 import * as express from 'express';
 import { createConnection } from 'typeorm';
 import { validate } from 'class-validator';
+import * as cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.get('/todos', async (req: express.Request, res: express.Response) => {
@@ -38,7 +40,7 @@ app.put('/todos/:uuid', async (req: express.Request, res: express.Response) => {
     const todoObj = await Todo.findOneOrFail({ uuid });
 
     todoObj.todo = todo || todoObj.todo;
-    todoObj.done = done || todoObj.done;
+    todoObj.done = done;
 
     await todoObj.save();
 

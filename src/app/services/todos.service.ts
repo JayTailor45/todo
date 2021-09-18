@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Todo } from './../models/todo';
-import { v4 as uuidv4 } from 'uuid';
+import { RestApiService } from './rest-api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodosService {
-
   todos$: Observable<Todo[]>;
   private _todos: BehaviorSubject<Todo[]>;
 
-  constructor() {
-    this._todos = new BehaviorSubject(this.getTodos());
+  constructor(
+    private restAPIService: RestApiService,
+    private snackbar: MatSnackBar,
+    ) {
+    this._todos = new BehaviorSubject<Todo[]>([]);
     this.todos$ = this._todos.asObservable();
   }
 
@@ -20,43 +23,49 @@ export class TodosService {
     return this._todos.getValue();
   }
 
-  getTodos(): Todo[] {
-    const todos = localStorage.getItem('todos');
-    if(todos) {
-      try {
-        return JSON.parse(todos) as Todo[];
-      } catch(e) {
-        return [];
+  getTodos() {
+    this.restAPIService.getTodos().subscribe(
+      (todos) => {
+        this.setTodos(todos);
+      },
+      (err) => {
+        this.setTodos([]);
       }
-    }
+    );
     return [];
   }
 
-  saveTodos() {
-    const stringifiedTodos = JSON.stringify(this.todos);
-    localStorage.setItem('todos', stringifiedTodos);
+  setTodos(todos: Todo[]) {
+    this._todos.next(todos);
   }
 
   addTodo(todoTitle: string) {
-    const newTodo = ({
-      id: uuidv4(),
-      text: todoTitle,
-      done: false,
-    }) as unknown as Todo;
-    this._todos.next([...this.todos, newTodo]);
-    this.saveTodos();
+    this.restAPIService.addTodo({todo: todoTitle, done: false}).subscribe(
+      (res) => {
+        this._todos.next([...this.todos, res]);
+      }, (error) => {
+        this.snackbar.open('Something went wrong!!!', 'OK');
+      }
+    );
   }
 
   checkTodo(todo: Todo) {
-    const remainingTodos = this.todos.filter(t => t.id !== todo.id);
-    this._todos.next([...remainingTodos, todo]);
-    this.saveTodos();
+    const todoToUpdate: Todo = {...todo};
+    this.restAPIService.updateTodo(todoToUpdate).subscribe((res) => {
+      const remainingTodos = this.todos.filter((t) => t.uuid !== todo.uuid);
+      this._todos.next([...remainingTodos, todoToUpdate]);
+    }, (error) => {
+      this.snackbar.open('Something went wrong!!!', 'OK');
+    });
   }
 
-  deleteTodo(id: string) {
-    const remainingTodos = this.todos.filter(t => t.id !== id);
-    this._todos.next([...remainingTodos]);
-    this.saveTodos();
+  deleteTodo(uuid: string) {
+    this.restAPIService.deleteTodo(uuid).subscribe((res) => {
+      const remainingTodos = this.todos.filter((t) => t.uuid !== uuid);
+      this._todos.next([...remainingTodos]);
+    }, (error) => {
+      this.snackbar.open('Something went wrong!!!', 'OK');
+    });
   }
 
 }

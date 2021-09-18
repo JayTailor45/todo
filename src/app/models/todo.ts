@@ -1,5 +1,7 @@
 export interface Todo {
-  id: string;
-  text: string;
+  uuid: string;
+  todo: string;
   done: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
